@@ -9,12 +9,13 @@ function errorHandler(err, req, res, next) {
         });
 }
 
-async function checkActionsId(res, req, next) {
+async function checkActionsId(req, res, next) {
     try {
         const potentialAction = await Actions.get(req.params.id);
         if (!potentialAction) {
             next({ status: 404, message: `Unable to retrieve the action at id ${req.params.id}`});
         } else {
+            req.action = potentialAction;
             next();
         }
     } catch (err) {
@@ -22,12 +23,12 @@ async function checkActionsId(res, req, next) {
     }
 }
 
-async function checkActionsBody(res, req, next) {
+async function checkActionsBody(req, res, next) {
     try {
-        const validatedBody = await actionsSchema.validate(
+        const validatedAction = await actionsSchema.validate(
             req.body
         );
-        req.body = validatedBody;
+        req.body = validatedAction;
         next();
     } catch (err) {
         next(err);

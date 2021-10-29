@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     try {
-        const actions = Actions.get();
+        const actions = await Actions.get();
         if (!actions) {
             res.send([]);
         } else {
@@ -23,14 +23,22 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:id', checkActionsId, async (req, res, next) => {
+router.get('/:id', checkActionsId, (req, res, next) => {
     try {
-        const action = await Actions.get(req.params.id);
-        res.status(200).json(action);
+        res.status(200).json(req.action);
     } catch (err) {
         next(err);
     }
-})
+});
+
+router.post('/', checkActionsBody, async (req, res, next) => {
+    try {
+        const newAction = await Actions.insert(req.body);
+        res.status(201).json(newAction);
+    } catch (err) {
+        next(err);
+    }
+});
 
 router.use(errorHandler);
 
