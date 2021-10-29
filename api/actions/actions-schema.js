@@ -26,7 +26,7 @@ const updatedActionSchema = yup.object().shape({
         .required('Must provide some notes'),
     completed: yup
         .boolean()
-        .required('Provide an updated completed value')
+        .required('Provide an updated completed value'),
 })
 
 module.exports = {
