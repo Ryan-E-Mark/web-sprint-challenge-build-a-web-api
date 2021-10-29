@@ -47,7 +47,16 @@ router.put('/:id', checkActionsBody, checkActionsId, async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-})
+});
+
+router.delete('/:id', checkActionsId, async (req, res, next) => {
+    try {
+        const deletedAction = await Actions.remove(req.params.id);
+        res.send('Successfully deleted action');
+    } catch (err) {
+        next(err);
+    }
+});
 
 router.use(errorHandler);
 
