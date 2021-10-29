@@ -44,6 +44,15 @@ router.put('/:id', checkProjectsBody, checkProjectsId, async (req, res, next) =>
     } catch (err) {
         next(err);
     }
+});
+
+router.delete('/:id', checkProjectsId, async (req, res, next) => {
+    try {
+        const deletedProject = await Projects.remove(req.params.id);
+        res.send('Successfully deleted project');
+    } catch (err) {
+        next(err);
+    }
 })
 
 router.use(errorHandler);
