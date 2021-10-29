@@ -20,10 +20,10 @@ async function checkProjectsBody(req, res, next) {
         const validatedProject = await projectsSchema.validate(
             req.body
         );
-        req.body = validatedProject;
-        next();
+            req.body = validatedProject;
+            next();
     } catch (err) {
-        next(err)
+        next({ status: 400, message: "Needs valid name and description"})
     }
 }
 
