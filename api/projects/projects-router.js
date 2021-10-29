@@ -9,7 +9,6 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     try {
-        console.log('working');
         const projects = await Projects.get();
         if (!projects) {
             res.send([]);
@@ -28,6 +27,15 @@ router.get('/:id', checkProjectsId, async (req, res, next) => {
         next(err);
     }
 });
+
+router.post('/', checkProjectsBody, async (req, res, next) => {
+    try {
+        const newProject = await Projects.insert(req.body);
+        res.status(201).json(newProject);
+    } catch (err) {
+        next(err);
+    }
+})
 
 router.use(errorHandler);
 
