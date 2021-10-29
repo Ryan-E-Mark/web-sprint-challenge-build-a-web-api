@@ -3,7 +3,8 @@ const express = require('express');
 const { 
     errorHandler, 
     checkActionsId, 
-    checkActionsBody 
+    checkActionsBody,
+    checkUpdatedActionBody 
 } = require('./actions-middlware');
 
 const Actions = require('./actions-model');
@@ -40,7 +41,7 @@ router.post('/', checkActionsBody, async (req, res, next) => {
     }
 });
 
-router.put('/:id', checkActionsBody, checkActionsId, async (req, res, next) => {
+router.put('/:id', checkUpdatedActionBody, checkActionsId, async (req, res, next) => {
     try {
         const updatedAction = await Actions.update(req.params.id, req.body);
         res.status(200).json(updatedAction);

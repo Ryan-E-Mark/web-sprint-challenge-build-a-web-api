@@ -1,5 +1,5 @@
 const Actions = require('./actions-model');
-const actionsSchema = require('./actions-schema');
+const { actionsSchema, updatedActionSchema } = require('./actions-schema');
 
 function errorHandler(err, req, res, next) {
     res.status(err.status || 500)
@@ -31,12 +31,25 @@ async function checkActionsBody(req, res, next) {
         req.body = validatedAction;
         next();
     } catch (err) {
-        next(err);
+        next({ status: 400, message: "Must provide project_id, description, and notes"});
+    }
+}
+
+async function checkUpdatedActionBody(req, res, next) {
+    try {
+        const validatedAction = await updatedActionSchema.validate(
+            req.body
+        );
+        req.body = validatedAction;
+        next();
+    } catch (err) {
+        next({ status: 400, message: "Must provide project_id, description, and notes"});
     }
 }
 
 module.exports = {
     errorHandler,
     checkActionsId,
-    checkActionsBody
+    checkActionsBody,
+    checkUpdatedActionBody
 }
