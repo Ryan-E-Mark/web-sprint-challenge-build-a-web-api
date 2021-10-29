@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { checkProjectsId, checkProjectsBody } = require('./projects-middleware');
+const { checkProjectsId, checkProjectsBody, checkUpdatedProjectBody } = require('./projects-middleware');
 const { errorHandler } = require('../actions/actions-middlware');
 
 const Projects = require('./projects-model');
@@ -37,7 +37,7 @@ router.post('/', checkProjectsBody, async (req, res, next) => {
     }
 });
 
-router.put('/:id', checkProjectsBody, checkProjectsId, async (req, res, next) => {
+router.put('/:id', checkUpdatedProjectBody, checkProjectsId, async (req, res, next) => {
     try {
         const updatedProject = await Projects.update(req.params.id, req.body);
         res.status(200).json(updatedProject);

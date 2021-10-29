@@ -1,5 +1,5 @@
 const Projects = require('./projects-model');
-const projectsSchema = require('./projects-schema');
+const { projectsSchema, updatedProjectSchema } = require('./projects-schema');
 
 async function checkProjectsId(req, res, next) {
     try {
@@ -27,7 +27,20 @@ async function checkProjectsBody(req, res, next) {
     }
 }
 
+async function checkUpdatedProjectBody(req, res, next) {
+    try {
+        const validatedProject = await updatedProjectSchema.validate(
+            req.body
+        );
+            req.body = validatedProject;
+            next();
+    } catch (err) {
+        next({ status: 400, message: "Needs valid name, description, and completed value"})
+    }
+}
+
 module.exports = {
     checkProjectsId,
-    checkProjectsBody
+    checkProjectsBody,
+    checkUpdatedProjectBody
 }
