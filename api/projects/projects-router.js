@@ -53,6 +53,15 @@ router.delete('/:id', checkProjectsId, async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+});
+
+router.get('/:id/actions', checkProjectsId, async (req, res, next) => {
+    try {
+        const projectActions = await Projects.getProjectActions(req.params.id);
+        res.status(200).json(projectActions);
+    } catch (err) {
+        next(err);
+    }
 })
 
 router.use(errorHandler);
